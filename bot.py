@@ -4,11 +4,10 @@ from discord import Client
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
-from dotenv import find_dotenv
 from selenium.webdriver.common.by import By
 import time
 
-load_dotenv("C:\\Users\\chenz\\OneDrive\\Desktop\\Github\Mangabot\\variable.env")
+load_dotenv("Path to the .env file goes here")
 
 token = os.getenv('BOT_TOKEN')
 userid = os.getenv('userid')
