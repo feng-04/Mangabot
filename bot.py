@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 from dotenv import find_dotenv
 from selenium.webdriver.common.by import By
+import time
 
 load_dotenv("C:\\Users\\chenz\\OneDrive\\Desktop\\Github\Mangabot\\variable.env")
 
@@ -25,6 +26,7 @@ manga_dates = {
     "Monday": ["Dandadan"], 
     "Tuesday": ["Chainsaw Man"], 
     "Wednesday": ["OSHI NO KO"],
+    "Thursday": ["KAIJU NO.8 (Monster #8)"]
 
 }
 
@@ -35,6 +37,7 @@ class mangabot(Client):
 
 
     async def get_update(self, user):
+        starttime = time.time()
         nowday = datetime.now()
         weekday = nowday.strftime("%A")
         date = nowday.strftime("%Y-%m-%d")
@@ -54,6 +57,9 @@ class mangabot(Client):
                     if release_date == date:
                         await user.send(url)
                         await user.send(f"This is the chapter {chapnum} for {title}")
+                        endtime = time.time()
+                        latency = endtime - starttime
+                        return latency
                     else:
                         await user.send(f"There is no new chaper for {title} this week")
                 except Exception as e:
@@ -73,9 +79,7 @@ class mangabot(Client):
 
         manga.driver.quit()
 
-        print(datenow)
-        print(release_date)
-        print(seven_days)
+
         
         
         # check if release date is between current and seven days later
@@ -98,7 +102,10 @@ class mangabot(Client):
 
         if user_message == "update":
             # check date
-            await self.get_update(user)
+           
+            latency = await self.get_update(user)
+            
+            await user.send(f"the latency is {latency}")
 
         elif user_message[:5] == "check":
             name = user_message[6:]

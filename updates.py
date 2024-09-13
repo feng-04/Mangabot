@@ -34,20 +34,20 @@ class update:
 
     def get_driver(self):
         chrome_option = Options()
-        #chrome_option.add_argument("--headless")
+        chrome_option.add_argument("--headless")
         driver = webdriver.Chrome(options=chrome_option)
         return driver
 
 
     def navigate(self, xpath):
-        stuff = WebDriverWait(self.driver, 15).until(
+        stuff = WebDriverWait(self.driver, timeout=15, poll_frequency=0.25).until(
             EC.visibility_of_element_located((By.XPATH, f"{xpath}"))
         )
         self.actions.click(stuff).perform()
 
     # go to the title page
     def finding_title(self):
-        stuff = WebDriverWait(self.driver, 15).until(
+        stuff = WebDriverWait(self.driver, timeout=15, poll_frequency=0.25).until(
             EC.visibility_of_element_located((By.XPATH, f"//*[contains(text(), '{self.name}')]"))
         )
         self.actions.click(stuff).perform()
@@ -59,7 +59,7 @@ class update:
         
         # in case it doesnt go into the chapter page directly
         if components[0] == "updates":
-            stuff = WebDriverWait(self.driver, 15).until(
+            stuff = WebDriverWait(self.driver, timeout=15, poll_frequency=0.25).until(
                 EC.visibility_of_element_located((By.XPATH, f"//*[contains(text(), '{self.name}')]"))
             )
             self.actions.click(stuff).perform()
@@ -88,8 +88,6 @@ class update:
         # we are in the title page rn
         self.finding_title()
 
-        time.sleep(1)
-
         date = self.reformat()
         # go to the chapter page
         stuff = self.driver.find_elements(By.CLASS_NAME, "ChapterListItem-module_chapterListItem_ykICp")
@@ -112,7 +110,7 @@ class update:
     def get_chapter(self):
 
         # find the chapter number from the chapter page
-        find_number = WebDriverWait(self.driver, 15).until(
+        find_number = WebDriverWait(self.driver, timeout=15, poll_frequency=0.25).until(
             EC.visibility_of_element_located((By.XPATH, '//*[@id="app"]/div[2]/div/div[3]/div[1]/div[2]/div/p'))
         )
 
@@ -125,7 +123,7 @@ class update:
     # always use after get_chapter, so that it doesnt click where it is not supposed to
     def reformat(self):
         # release date from mangaplus is 9 SEPT 2024 format, need a dict also
-        date_element = WebDriverWait(self.driver, 20).until(
+        date_element = WebDriverWait(self.driver, timeout=15, poll_frequency=0.25).until(
             EC.visibility_of_any_elements_located((By.XPATH, '//*[@id="app"]/div[2]/div/div[2]/div/div/div[2]/main/div/div[9]/div[1]/p[2]'))
         )
         
@@ -157,7 +155,7 @@ class update:
         self.finding_title()
         print(self.driver.current_url)
        
-        raw_text = WebDriverWait(self.driver, 20).until(
+        raw_text = WebDriverWait(self.driver, timeout=15, poll_frequency=0.25).until(
             EC.visibility_of_any_elements_located((By.XPATH, '//*[@id="app"]/div[2]/div/div[2]/div/div/div[2]/topside/div[2]/p[1]/span'))
         )
         
